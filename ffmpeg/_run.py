@@ -170,6 +170,9 @@ def get_args(stream_spec, overwrite_output=False):
     args += reduce(operator.add, [_get_global_args(node) for node in global_nodes], [])
     if overwrite_output:
         args += ['-y']
+    for i, arg in enumerate(args):
+        if arg.startswith('[') and arg.endswith(']'):
+            args[i] = f'"{args}"'
     return args
 
 
