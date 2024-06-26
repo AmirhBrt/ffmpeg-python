@@ -170,9 +170,6 @@ def get_args(stream_spec, overwrite_output=False):
     args += reduce(operator.add, [_get_global_args(node) for node in global_nodes], [])
     if overwrite_output:
         args += ['-y']
-    for i, arg in enumerate(args):
-        if arg.startswith('[') and arg.endswith(']'):
-            args[i] = f'"{args}"'
     return args
 
 
@@ -192,7 +189,7 @@ def compile(stream_spec, cmd='ffmpeg', overwrite_output=False):
         cmd = [cmd]
     elif type(cmd) != list:
         cmd = list(cmd)
-    return cmd + get_args(stream_spec, overwrite_output=overwrite_output)
+    return cmd + list(filter(lambda x: x != '', get_args(stream_spec, overwrite_output=overwrite_output)))
 
 
 @output_operator()
